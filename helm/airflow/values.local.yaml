@@ -1,0 +1,12 @@
+airflow:
+  executor: LocalExecutor
+
+  webserverSecretKeyName: airflow-webserver-secret
+
+  fernetKeySecretKeyName: airflow-fernet-secret
+
+  gitsync:
+    enabled: False
+  
+  statsd:
+    enabled: False

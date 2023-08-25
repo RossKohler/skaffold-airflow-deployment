@@ -1,0 +1,23 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: skaffold-airflow
+nodes:
+- role: control-plane
+  image: &image kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
+  kubeadmConfigPatches:
+    - |
+      kind: ClusterConfiguration
+      controllerManager:
+          extraArgs:
+            cluster-signing-cert-file: /etc/kubernetes/pki/ca.crt
+            cluster-signing-key-file: /etc/kubernetes/pki/ca.key
+- &workerConfig
+  role: worker
+  image: *image
+  extraMounts:
+    - hostPath: .
+      containerPath: /container-path
+    - hostPath: ./.kind-pv-data
+      containerPath: /var/local-path-provisioner
+- *workerConfig
+  
